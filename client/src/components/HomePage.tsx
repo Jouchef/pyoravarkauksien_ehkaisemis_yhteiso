@@ -7,6 +7,7 @@ import styles from '../App.module.css'
 import { LatLng } from "leaflet"
 import ReportModal from "./ReportModal"
 import { auth } from "../services/google_authentication"
+import { signOut } from "firebase/auth"
 
 const initialFilters: Filters = {
   bikeTheft: {
@@ -54,7 +55,12 @@ const HomePage = () => {
           <button className={`${styles['base-button']}`} id={styles['theft-button']} onClick={reportHandler}>{reportMode ? "Cancel" : "Report theft"}</button>
           <Notification message={"Place me where the theft happened"} visible={reportMode}/>
           <ReportModal theftPosition={theftPosition} setTheftPosition={setTheftPosition} bikeThefts={bikeThefts} setBikeThefts={setBikeThefts} />
-          {user && <p>You are logged in as {user.email}</p>}
+          {user &&
+            <div>
+              <p>You are logged in as {user.email}</p>
+              <button onClick={() => signOut(auth)}>logout</button>
+            </div>
+          }
       </div>
       <Map
           reportMode={reportMode}
